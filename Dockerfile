@@ -30,48 +30,40 @@ RUN set -ex; \
 
 # Nginx
 COPY etc/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 COPY etc/supervisor/conf.d/nginx.conf /etc/supervisor/conf.d/nginx.conf
 COPY init.d/50-nginx.sh /docker-entrypoint-init.d/50-nginx.sh
-COPY pre-init-tests.d/50-nginx.sh /docker-entrypoint-pre-init-tests.d/50-nginx.sh
 RUN set -eux; \
 		chown root:root \
 			/etc/nginx/nginx.conf \
+			/etc/nginx/conf.d/default.conf \
 			/etc/supervisor/conf.d/nginx.conf \
-			/docker-entrypoint-init.d/50-nginx.sh \
-			/docker-entrypoint-pre-init-tests.d/50-nginx.sh; \
+			/docker-entrypoint-init.d/50-nginx.sh; \
 		chmod 0644 \
 			/etc/nginx/nginx.conf \
+			/etc/nginx/conf.d/default.conf \
 			/etc/supervisor/conf.d/nginx.conf; \
 		chmod 0755 \
-			/docker-entrypoint-init.d/50-nginx.sh \
-			/docker-entrypoint-pre-init-tests.d/50-nginx.sh
+			/docker-entrypoint-init.d/50-nginx.sh;
 EXPOSE 80
 
-# PHP-FPM
+# UWSGI
 COPY etc/uwsgi/uwsgi.ini /etc/uwsgi/uwsgi.ini
-#COPY etc/php7/php-fpm.d/www.conf /etc/php7/php-fpm.d/www.conf
 COPY etc/supervisor/conf.d/uwsgi.conf /etc/supervisor/conf.d/uwsgi.conf
-#COPY pre-init-tests.d/50-php-fpm.sh /docker-entrypoint-pre-init-tests.d/50-php-fpm.sh
-#COPY tests.d/50-php-fpm.sh /docker-entrypoint-tests.d/50-php-fpm.sh
-#COPY tests.d/52-php-fpm-with-ioncube.sh /docker-entrypoint-tests.d/52-php-fpm-with-ioncube.sh
+COPY pre-init-tests.d/50-uwsgi.sh /docker-entrypoint-pre-init-tests.d/50-uwsgi.sh
+COPY tests.d/50-uwsgi.sh /docker-entrypoint-tests.d/50-uwsgi.sh
 RUN set -eux; \
 		chown root:root \
-			/etc/uwsgi/uwsgi.ini; \
+			/etc/uwsgi/uwsgi.ini \
+			/etc/supervisor/conf.d/uwsgi.conf \
+			/docker-entrypoint-pre-init-tests.d/50-uwsgi.sh \
+			/docker-entrypoint-tests.d/50-uwsgi.sh; \
 		chmod 0644 \
-			/etc/uwsgi/uwsgi.ini
-#		chown root:root \
-#			/etc/php7/conf.d/50-docker.ini \
-#			/etc/php7/php-fpm.d/www.conf \
-#			/etc/supervisor/conf.d/php-fpm.conf \
-#			/docker-entrypoint-pre-init-tests.d/50-php-fpm.sh \
-#			/docker-entrypoint-tests.d/50-php-fpm.sh; \
-#		chmod 0644 \
-#			/etc/php7/conf.d/50-docker.ini \
-#			/etc/php7/php-fpm.d/www.conf \
-#			/etc/supervisor/conf.d/php-fpm.conf; \
-#		chmod 0755 \
-#			/docker-entrypoint-pre-init-tests.d/50-php-fpm.sh \
-#			/docker-entrypoint-tests.d/50-php-fpm.sh
+			/etc/uwsgi/uwsgi.ini \
+			/etc/supervisor/conf.d/uwsgi.conf; \
+		chmod 0755 \
+			/docker-entrypoint-pre-init-tests.d/50-uwsgi.sh \
+			/docker-entrypoint-tests.d/50-uwsgi.sh
 
 # Health check
 HEALTHCHECK CMD curl --fail http://localhost:80 || exit 1
