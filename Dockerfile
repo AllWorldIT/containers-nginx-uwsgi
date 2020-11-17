@@ -30,21 +30,21 @@ RUN set -ex; \
 
 # Nginx
 COPY etc/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 COPY etc/supervisor/conf.d/nginx.conf /etc/supervisor/conf.d/nginx.conf
 COPY init.d/50-nginx.sh /docker-entrypoint-init.d/50-nginx.sh
-COPY pre-init-tests.d/50-nginx.sh /docker-entrypoint-pre-init-tests.d/50-nginx.sh
 RUN set -eux; \
 		chown root:root \
 			/etc/nginx/nginx.conf \
+			/etc/nginx/conf.d/default.conf \
 			/etc/supervisor/conf.d/nginx.conf \
-			/docker-entrypoint-init.d/50-nginx.sh \
-			/docker-entrypoint-pre-init-tests.d/50-nginx.sh; \
+			/docker-entrypoint-init.d/50-nginx.sh; \
 		chmod 0644 \
 			/etc/nginx/nginx.conf \
+			/etc/nginx/conf.d/default.conf \
 			/etc/supervisor/conf.d/nginx.conf; \
 		chmod 0755 \
-			/docker-entrypoint-init.d/50-nginx.sh \
-			/docker-entrypoint-pre-init-tests.d/50-nginx.sh
+			/docker-entrypoint-init.d/50-nginx.sh;
 EXPOSE 80
 
 # UWSGI
