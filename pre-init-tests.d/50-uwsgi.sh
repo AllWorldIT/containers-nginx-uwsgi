@@ -9,3 +9,5 @@ def hello_world():
     return 'TEST SUCCESS\n'
 EOF
 
+apk add --no-cache curl
+
