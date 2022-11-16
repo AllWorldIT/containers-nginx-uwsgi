@@ -8,7 +8,6 @@ RUN set -ex; \
 	apk add --no-cache uwsgi-python3 \
 		py3-flask \
 		py3-flask-wtf \
-		curl \
 		; \
 	true "Web app"; \
 	mkdir -p /var/www/app; \
