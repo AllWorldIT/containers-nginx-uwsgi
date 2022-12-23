@@ -53,5 +53,5 @@ RUN set -eux; \
 			/docker-entrypoint-tests.d/50-uwsgi.sh
 
 # Health check
-HEALTHCHECK CMD curl --silent --fail http://localhost
+HEALTHCHECK CMD curl --silent --fail http://localhost || exit 1
 
