@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright (c) 2022-2023, AllWorldIT.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,18 +20,16 @@
 # IN THE SOFTWARE.
 
 
-[uwsgi]
+cat <<EOF > /var/www/app/app.py
+from flask import Flask
+app = Flask(__name__)
 
-master = true
-plugins = python
+@app.route('/')
+def hello_world():
+    return 'TEST SUCCESS\n'
+EOF
 
-uid = www-data
-gid = www-data
+echo "flask" > /var/www/app/requirements.txt
 
-socket = /run/uwsgi.sock
-chown-socket = root:nginx
-chmod-socket = 660
-
-log-x-forwarded-for = true
-
-ini = /etc/uwsgi/app.ini
+mkdir /var/www/app/static
+echo '/* TEST STATIC SUCCESS */' > /var/www/app/static/file.css

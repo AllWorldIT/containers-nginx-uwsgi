@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright (c) 2022-2023, AllWorldIT.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,18 +20,26 @@
 # IN THE SOFTWARE.
 
 
-[uwsgi]
+# If we have a requirements.txt file it can be assumed we need to setup a virtualenv
+if [ -e /var/www/app/requirements.txt ]; then
+	# If we have a bin directory, it's probably already set up
+	if [ ! -d /var/www/app/virtualenv/bin ]; then
+		python -m venv /var/www/virtualenv
+		/var/www/virtualenv/bin/pip install -r /var/www/app/requirements.txt
+	fi
+fi
 
-master = true
-plugins = python
+# Check if we need to chagne the worker count
+if [ -n "$UWSGI_WORKERS" ]; then
+	sed -i -e "s/workers = 4/workers = $UWSGI_WORKERS/" /etc/uwsgi/app.ini
+fi
 
-uid = www-data
-gid = www-data
+# Check if we need to chagne the module
+if [ -n "$UWSGI_MODULE" ]; then
+	sed -i -e "s/module = app/workers = $UWSGI_MODULE/" /etc/uwsgi/app.ini
+fi
 
-socket = /run/uwsgi.sock
-chown-socket = root:nginx
-chmod-socket = 660
-
-log-x-forwarded-for = true
-
-ini = /etc/uwsgi/app.ini
+# Check if we need to chagne the callable
+if [ -n "$UWSGI_CALLABLE" ]; then
+	sed -i -e "s/callable = app/callable = $UWSGI_CALLABLE/" /etc/uwsgi/app.ini
+fi
