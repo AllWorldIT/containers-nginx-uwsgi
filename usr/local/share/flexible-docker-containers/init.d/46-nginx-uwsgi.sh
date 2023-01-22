@@ -20,14 +20,7 @@
 # IN THE SOFTWARE.
 
 
-# If we have a requirements.txt file it can be assumed we need to setup a virtualenv
-if [ -e /var/www/app/requirements.txt ]; then
-	# If we have a bin directory, it's probably already set up
-	if [ ! -d /var/www/app/virtualenv/bin ]; then
-		python -m venv /var/www/virtualenv
-		/var/www/virtualenv/bin/pip install -r /var/www/app/requirements.txt
-	fi
-fi
+fdc_notice "Initializing Nginx UWSGI settings"
 
 # Check if we need to chagne the worker count
 if [ -n "$UWSGI_WORKERS" ]; then
@@ -42,4 +35,14 @@ fi
 # Check if we need to chagne the callable
 if [ -n "$UWSGI_CALLABLE" ]; then
 	sed -i -e "s/callable = app/callable = $UWSGI_CALLABLE/" /etc/uwsgi/app.ini
+fi
+
+# If we have a requirements.txt file it can be assumed we need to setup a virtualenv
+if [ -e /var/www/app/requirements.txt ]; then
+	# If we have a bin directory, it's probably already set up
+	if [ ! -d /var/www/app/virtualenv/bin ]; then
+		fdc_notice "Downloading app depedencies..."
+		python -m venv /var/www/virtualenv
+		/var/www/virtualenv/bin/pip install -r /var/www/app/requirements.txt
+	fi
 fi
