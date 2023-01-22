@@ -20,49 +20,37 @@
 # IN THE SOFTWARE.
 
 
-echo "TEST START (nginx-uwsgi): Check Nginx is responding to static file requests using IPv4..."
+fdc_test_start nginx-uwsgi "Check Nginx is responding to static file requests using IPv4..."
 if ! curl --verbose --ipv4 "http://localhost/static/file.css" --output test.static.out; then
-	echo "TEST FAILED (nginx-uwsgi): Failed to get static file from Nginx using IPv4"
+	fdc_test_fail nginx-uwsgi "Failed to get static file from Nginx using IPv4"
 	false
 fi
 
 echo "/* TEST STATIC SUCCESS */" > test.static.out.correct
 if ! diff test.static.out.correct test.static.out; then
-	echo "TEST FAILED (nginx-uwsgi): Contents of static file does not match what it should be using IPv4"
-	echo "= = = test.out = = ="
-	cat test.static.out
-	echo "= = = test.out = = ="
-	echo "= = = test.out.correct = = ="
-	cat test.static.out.correct
-	echo "= = = test.out.correect = = ="
+	fdc_test_fail nginx-uwsgi "Contents of static file does not match what it should be using IPv4"
 	false
 fi
 
-echo "TEST PASSED (nginx-uwsgi): Nginx is responding to static files using IPv4"
+fdc_test_pass nginx-uwsgi "Nginx is responding to static files using IPv4"
 
 
 # Return if we don't have IPv6 support
 if [ -z "$(ip -6 route show default)" ]; then
-    return
+	return
 fi
 
 
-echo "TEST START (nginx-uwsgi): Check Nginx is responding to static file requests using IPv6..."
+fdc_test_start nginx-uwsgi "Check Nginx is responding to static file requests using IPv6..."
 if ! curl --verbose --ipv6 "http://localhost/static/file.css" --output test.static.out; then
-	echo "TEST FAILED (nginx-uwsgi): Failed to get static file from Nginx using IPv6"
+	fdc_test_fail nginx-uwsgi "Failed to get static file from Nginx using IPv6"
 	false
 fi
 
 echo "/* TEST STATIC SUCCESS */" > test.static.out.correct
 if ! diff test.static.out.correct test.static.out; then
-	echo "TEST FAILED (nginx-uwsgi): Contents of static file does not match what it should be using IPv6"
-	echo "= = = test.out = = ="
-	cat test.static.out
-	echo "= = = test.out = = ="
-	echo "= = = test.out.correct = = ="
-	cat test.static.out.correct
-	echo "= = = test.out.correect = = ="
+	fdc_test_fail nginx-uwsgi "Contents of static file does not match what it should be using IPv6"
 	false
 fi
 
-echo "TEST PASSED (nginx-uwsgi): Nginx is responding to static files using IPv6"
+fdc_test_pass nginx-uwsgi "Nginx is responding to static files using IPv6"
