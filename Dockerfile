@@ -27,7 +27,7 @@ LABEL org.opencontainers.image.version   = "edge"
 LABEL org.opencontainers.image.base.name = "registry.conarx.tech/containers/nginx/edge"
 
 
-RUN set -ex; \
+RUN set -eux; \
 	true "UWSGI"; \
 	apk add --no-cache \
 		uwsgi-python3; \
@@ -40,7 +40,6 @@ RUN set -ex; \
 
 # We'll be using our own tests
 RUN set -eux; \
-	rm -rf /var/www/html; \
 	rm -f usr/local/share/flexible-docker-containers/pre-init-tests.d/44-nginx.sh
 
 
