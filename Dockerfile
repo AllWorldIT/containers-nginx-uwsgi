@@ -32,8 +32,9 @@ RUN set -eux; \
 	apk add --no-cache \
 		uwsgi-python3; \
 	true "Web app"; \
-	mkdir -p /var/www/app; \
-	chown uwsgi:uwsgi /var/www/app; chmod 0755 /var/www/app; \
+	mkdir -p /app; \
+	chown uwsgi:uwsgi /app; \
+	chmod 0755 /app; \
 	true "Cleanup"; \
 	rm -f /var/cache/apk/*
 
