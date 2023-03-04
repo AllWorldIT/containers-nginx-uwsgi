@@ -20,7 +20,7 @@
 # IN THE SOFTWARE.
 
 
-cat <<EOF > /var/www/app/app.py
+cat <<EOF > /app/app.py
 from flask import Flask
 app = Flask(__name__)
 
@@ -29,7 +29,7 @@ def hello_world():
     return 'TEST SUCCESS\n'
 EOF
 
-echo "flask" > /var/www/app/requirements.txt
+echo "flask" > /app/requirements.txt
 
-mkdir /var/www/app/static
-echo '/* TEST STATIC SUCCESS */' > /var/www/app/static/file.css
+mkdir /app/static
+echo '/* TEST STATIC SUCCESS */' > /app/static/file.css

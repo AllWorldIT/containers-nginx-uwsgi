@@ -60,7 +60,7 @@ We also provide consulting services to create and maintain Docker images to meet
 Additional environment variables are available from...
 * [Conarx Containers Nginx image](https://gitlab.conarx.tech/containers/nginx)
 * [Conarx Containers Postfix image](https://gitlab.conarx.tech/containers/postfix)
-* [Conarx Containers Alpine image](https://gitlab.conarx.tech/containers/alpine).
+* [Conarx Containers Alpine image](https://gitlab.conarx.tech/containers/alpine)
 
 
 ## UWSGI_WORKERS
@@ -82,7 +82,7 @@ UWSGI callable, defaults to `app`.
 # Volumes
 
 
-## /var/www/app
+## /app
 
 Application directory.
 
@@ -110,10 +110,10 @@ App specific UWSGI configuration, a copy is included below for reference...
 ```ini
 [uwsgi]
 
-chdir = /var/www/app
+chdir = /app
 
-if-dir = /var/www/virtualenv
-virtualenv = /var/www/virtualenv
+if-dir = /app/.venv
+virtualenv = /app/.venv
 endif =
 
 workers = 4
@@ -124,23 +124,23 @@ callable = app
 Keeping in mind that the `workers`, `module` and `callable` can be customized using environment variables.
 
 
-## /var/www/app/requirements.txt
+## /app/requirements.txt
 
-If `/var/www/app/requirements.txt` exists and no `/var/www/virtualenv` exists, a virtual environment will be created using the
+If `/app/requirements.txt` exists and no `/app/.venv` exists, a virtual environment will be created using the
 `requirements.txt` file.
 
-The virtual environment can be persisted using a volume for `/var/www/virtualenv`.
+The virtual environment can be persisted using a volume for `/app/.venv`.
 
 
-## /var/www/app/static/
+## /app/static/
 
 This directory will be served directly from Nginx bypassing UWSGI.
 
 
-## /var/www/virtualenv/
+## /app/.venv/
 
 If this directory exists it will be used as the virtualenv for the application. It will be automatically created if
-`/var/www/app/requirements.txt` exists.
+`/app/requirements.txt` exists.
 
 
 
