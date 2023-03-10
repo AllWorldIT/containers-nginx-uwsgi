@@ -52,6 +52,7 @@ COPY etc/nginx/http.d/50_vhost_default.conf /etc/nginx/http.d
 COPY etc/uwsgi/uwsgi.ini /etc/uwsgi/uwsgi.ini
 COPY etc/uwsgi/app.ini /etc/uwsgi/app.ini
 COPY etc/supervisor/conf.d/uwsgi.conf /etc/supervisor/conf.d/uwsgi.conf
+COPY usr/local/sbin/start-uwsgi /usr/local/sbin
 COPY usr/local/share/flexible-docker-containers/init.d/46-nginx-uwsgi.sh /usr/local/share/flexible-docker-containers/init.d
 COPY usr/local/share/flexible-docker-containers/pre-init-tests.d/46-nginx-uwsgi.sh /usr/local/share/flexible-docker-containers/pre-init-tests.d
 COPY usr/local/share/flexible-docker-containers/tests.d/46-nginx-uwsgi.sh /usr/local/share/flexible-docker-containers/tests.d
@@ -59,8 +60,11 @@ RUN set -eux; \
 	true "Flexible Docker Containers"; \
 	if [ -n "$VERSION_INFO" ]; then echo "$VERSION_INFO" >> /.VERSION_INFO; fi; \
 	chown root:root \
-		/etc/uwsgi/uwsgi.ini; \
+		/etc/uwsgi/uwsgi.ini \
+		/usr/local/sbin/start-uwsgi; \
 	chmod 0644 \
 		/etc/uwsgi/uwsgi.ini; \
+	chmod 0755 \
+		/usr/local/sbin/start-uwsgi; \
 	true "Permissions"; \
 	fdc set-perms

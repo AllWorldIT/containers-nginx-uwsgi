@@ -124,6 +124,11 @@ callable = app
 Keeping in mind that the `workers`, `module` and `callable` can be customized using environment variables.
 
 
+## /etc/uwsgi/uwsgi.env
+
+Environment variables to export for UWSGI.
+
+
 ## /app/requirements.txt
 
 If `/app/requirements.txt` exists and no `/app/.venv` exists, a virtual environment will be created using the
