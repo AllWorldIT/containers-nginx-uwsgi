@@ -33,8 +33,6 @@ RUN set -eux; \
 		uwsgi-python3; \
 	true "Web app"; \
 	mkdir -p /app; \
-	chown uwsgi:uwsgi /app; \
-	chmod 0755 /app; \
 	true "Cleanup"; \
 	rm -f /var/cache/apk/*
 
@@ -60,11 +58,13 @@ RUN set -eux; \
 	true "Flexible Docker Containers"; \
 	if [ -n "$VERSION_INFO" ]; then echo "$VERSION_INFO" >> /.VERSION_INFO; fi; \
 	chown root:root \
+		/app \
 		/etc/uwsgi/uwsgi.ini \
 		/usr/local/sbin/start-uwsgi; \
 	chmod 0644 \
 		/etc/uwsgi/uwsgi.ini; \
 	chmod 0755 \
+		/app \
 		/usr/local/sbin/start-uwsgi; \
 	true "Permissions"; \
 	fdc set-perms
