@@ -37,7 +37,7 @@ fdc_test_pass nginx-uwsgi "Nginx is responding to static files using IPv4"
 
 # Return if we don't have IPv6 support
 if [ -z "$(ip -6 route show default)" ]; then
-	fdc_test_alert nginx-gunicorn "Not running IPv6 tests due to no IPv6 default route"
+	fdc_test_alert nginx-uwsgi "Not running IPv6 tests due to no IPv6 default route"
 	return
 fi
 
