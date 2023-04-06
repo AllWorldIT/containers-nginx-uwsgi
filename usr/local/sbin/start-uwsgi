@@ -20,12 +20,16 @@
 # IN THE SOFTWARE.
 
 
-export PATH=/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 
 # Make sure we're in the correct directory before we start uwsgi
 # shellcheck disable=SC2164
 cd /app
+
+# Activate virtual environment
+# shellcheck disable=SC1091
+. /app/.venv/bin/activate
 
 # Check if we have an environment set for uwsgi
 if [ -e /etc/uwsgi/uwsgi.env ]; then
@@ -35,4 +39,4 @@ if [ -e /etc/uwsgi/uwsgi.env ]; then
     set +a
 fi
 
-exec /usr/sbin/uwsgi "$@"
+exec uwsgi "$@"
