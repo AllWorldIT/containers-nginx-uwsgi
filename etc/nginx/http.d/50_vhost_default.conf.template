@@ -1,4 +1,3 @@
-#!/bin/bash
 # Copyright (c) 2022-2023, AllWorldIT.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,18 +19,34 @@
 # IN THE SOFTWARE.
 
 
-cat <<EOF > /app/app.py
-from flask import Flask
-app = Flask(__name__)
+server {
+	listen [::]:80 ipv6only=off default_server;
+	server_name _;
 
-@app.route('/')
-def hello_world():
-    return 'TEST SUCCESS\n'
-EOF
+	location = /favicon.ico {
+		log_not_found off;
+		access_log off;
+	}
 
-cat <<EOF > /app/requirements.txt
-flask
-EOF
+	location = /robots.txt {
+		allow all;
+		log_not_found off;
+		access_log off;
+	}
 
-mkdir /app/static
-echo '/* TEST STATIC SUCCESS */' > /app/static/file.css
+    location /static/ {
+		alias /app/static/;
+
+		location ~* \.(js|css|gif|ico|jpg|jpeg|png)$ {
+			expires max;
+		}
+    }
+
+	location / {
+		# Pass request to UWSGI
+		uwsgi_pass unix:/run/uwsgi.sock;
+
+		# Include uwsgi_params settings
+		include uwsgi_params;
+	}
+}

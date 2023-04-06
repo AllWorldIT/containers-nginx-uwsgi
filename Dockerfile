@@ -43,7 +43,8 @@ RUN set -eux; \
 
 
 # Nginx - override the default vhost to include UWSGI support
-COPY etc/nginx/http.d/50_vhost_default.conf /etc/nginx/http.d
+COPY etc/nginx/http.d/50_vhost_default.conf.template /etc/nginx/http.d
+COPY etc/nginx/http.d/50_vhost_default-ssl-certbot.conf.template /etc/nginx/http.d
 
 
 # UWSGI
@@ -59,9 +60,13 @@ RUN set -eux; \
 	if [ -n "$VERSION_INFO" ]; then echo "$VERSION_INFO" >> /.VERSION_INFO; fi; \
 	chown root:root \
 		/app \
+		/etc/nginx/http.d/50_vhost_default.conf.template \
+		/etc/nginx/http.d/50_vhost_default-ssl-certbot.conf.template \
 		/etc/uwsgi/uwsgi.ini \
 		/usr/local/sbin/start-uwsgi; \
 	chmod 0644 \
+		/etc/nginx/http.d/50_vhost_default.conf.template \
+		/etc/nginx/http.d/50_vhost_default-ssl-certbot.conf.template \
 		/etc/uwsgi/uwsgi.ini; \
 	chmod 0755 \
 		/app \
