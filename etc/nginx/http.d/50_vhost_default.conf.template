@@ -34,13 +34,13 @@ server {
 		access_log off;
 	}
 
-    location /static/ {
+	location /static/ {
 		alias /app/static/;
 
 		location ~* \.(js|css|gif|ico|jpg|jpeg|png)$ {
 			expires max;
 		}
-    }
+	}
 
 	location / {
 		# Pass request to UWSGI
