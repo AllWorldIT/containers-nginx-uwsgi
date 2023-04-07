@@ -23,6 +23,8 @@ server {
 	listen [::]:80 ipv6only=off default_server;
 	server_name _;
 
+@NGINX_HTTP_REDIRECT@
+
 	location = /favicon.ico {
 		log_not_found off;
 		access_log off;
