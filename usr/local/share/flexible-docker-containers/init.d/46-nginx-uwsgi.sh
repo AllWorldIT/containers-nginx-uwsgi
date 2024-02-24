@@ -36,14 +36,3 @@ fi
 if [ -n "$UWSGI_CALLABLE" ]; then
 	sed -i -e "s/callable = app/callable = $UWSGI_CALLABLE/" /etc/uwsgi/app.ini
 fi
-
-# If we have a requirements.txt file it can be assumed we need to setup a virtualenv
-if [ -e /app/requirements.txt ]; then
-	# If we have a bin directory, it's probably already set up
-	if [ ! -d /app/.venv/bin ]; then
-		fdc_notice "Installing Nginx UWSGI app depedencies"
-		python -m venv /app/.venv
-		/app/.venv/bin/pip install --no-cache --upgrade pip
-		/app/.venv/bin/pip install --no-cache --requirement /app/requirements.txt
-	fi
-fi

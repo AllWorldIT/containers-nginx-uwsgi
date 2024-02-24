@@ -33,5 +33,12 @@ cat <<EOF > /app/requirements.txt
 flask
 EOF
 
+python -m venv /app/.venv
+(
+    # shellcheck disable=SC1091
+    . /app/.venv/bin/activate
+    pip install -r /app/requirements.txt
+)
+
 mkdir /app/static
 echo '/* TEST STATIC SUCCESS */' > /app/static/file.css
