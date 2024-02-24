@@ -129,14 +129,6 @@ Keeping in mind that the `workers`, `module` and `callable` can be customized us
 Environment variables to export for UWSGI.
 
 
-## /app/requirements.txt
-
-If `/app/requirements.txt` exists and no `/app/.venv` exists, a virtual environment will be created using the
-`requirements.txt` file.
-
-The virtual environment can be persisted using a volume for `/app/.venv`.
-
-
 ## /app/static/
 
 This directory will be served directly from Nginx bypassing UWSGI.
@@ -144,9 +136,17 @@ This directory will be served directly from Nginx bypassing UWSGI.
 
 ## /app/.venv/
 
-If this directory exists it will be used as the virtualenv for the application. It will be automatically created if
-`/app/requirements.txt` exists.
+Virtual environment for the application which must be created beforehand.
 
+This can be created with...
+
+```sh
+docker run -it --rm \
+    -v /path/to/venv:/app/.venv \
+    -v /path/to/app/requirements.txt:/app/requirements.txt \
+    allworldit/nginx-uwsgi \
+    /bin/sh -c "python -m venv /app/.venv; . /app/.venv/bin/activate; pip install --requirement /app/requirements.txt"
+```
 
 
 # Health Checks
