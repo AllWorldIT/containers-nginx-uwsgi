@@ -36,3 +36,15 @@ fi
 if [ -n "$UWSGI_CALLABLE" ]; then
 	sed -i -e "s/callable = app/callable = $UWSGI_CALLABLE/" /etc/uwsgi/app.ini
 fi
+
+# Decide what we're doing about the app environment
+if [ ! -e /etc/uwsgi/uwsgi.env ]; then
+	if set | grep -q -E '^UWSGI_ENV_'; then
+		fdc_notice "Writing out custom Gunicorn environment variables"
+		set | grep -E '^UWSGI_ENV_' | sed -e 's/^UWSGI_ENV_//' > /etc/uwsgi/uwsgi.env
+	fi
+fi
+if [ -e /etc/uwsgi/uwsgi.env ]; then
+	chown root:uwsgi /etc/uwsgi/uwsgi.env
+	chmod 0640 /etc/uwsgi/uwsgi.env
+fi
