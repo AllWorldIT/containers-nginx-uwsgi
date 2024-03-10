@@ -78,6 +78,11 @@ Application module to use, defaults to `app`.
 UWSGI callable, defaults to `app`.
 
 
+## UWSGI_ENV_*
+
+Environment to export to UWSGI, where `UWSGI_ENV_` will be stripped from each item.
+
+
 
 # Volumes
 
@@ -126,7 +131,8 @@ Keeping in mind that the `workers`, `module` and `callable` can be customized us
 
 ## /etc/uwsgi/uwsgi.env
 
-Environment variables to export for UWSGI.
+Environment to export to UWSGI. This is created from `UWSGI_ENV_*` where `UWSGI_ENV_` is stripped off if it does not exist
+an there are environment variables with that name.
 
 
 ## /app/static/
